@@ -10,34 +10,72 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <title>Traductor de mensajería instantanea de KEFLOWERS</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Rama Hernán Iturralde Grupo 1 Rama Hernan prueba</title>
+      code {
+        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+          monospace;
+      }
+
+      #main-container {
+        background-color: #F5F5DC; /* Color blanco medio crema */
+        padding: 50px;
+        text-align: center;
+        min-height: 100vh;
+      }
+
+      #main-title {
+        color: #333;
+        font-size: 36px;
+        margin-bottom: 20px;
+      }
+
+      #main-description {
+        color: #666;
+        font-size: 18px;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <script type="text/babel">
+      const { useState, useEffect } = React;
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+      const MainPage = () => {
+        return (
+          <div id="main-container">
+            <h1 id="main-title">Traductor de mensajería instantánea de KEFLOWERS</h1>
+            <p id="main-description">
+              Los mensajes que se envían en esta plataforma son seguros y serán traducidos al instante.
+            </p>
+          </div>
+        );
+      }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+      ReactDOM.render(
+        <React.StrictMode>
+          <MainPage />
+        </React.StrictMode>,
+        document.getElementById('root')
+      );
+    </script>
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load Babel Compiler -->
+    <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
   </body>
 </html>
