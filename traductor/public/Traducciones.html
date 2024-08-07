@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        select, button {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Message Translator</h1>
+        <textarea id="inputText" placeholder="Enter text to translate..."></textarea>
+        <br>
+        <select id="languageSelect">
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="en">English</option>
+        </select>
+        <button onclick="translateText()">Translate</button>
+        <h2>Translated Text</h2>
+        <textarea id="outputText" readonly></textarea>
+    </div>
+
+    <script>
+        async function translateText() {
+            const inputText = document.getElementById('inputText').value;
+            const targetLang = document.getElementById('languageSelect').value;
+            
+            const apiKey = 'YOUR_GOOGLE_API_KEY';
+            const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+            const data = {
+                q: inputText,
+                target: targetLang
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                const translatedText = result.data.translations[0].translatedText;
+                document.getElementById('outputText').value = translatedText;
+            } catch (error) {
+                console.error('Error translating text:', error);
+            }
+        }
+    </script>
+</body>
+</html>
