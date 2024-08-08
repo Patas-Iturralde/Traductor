@@ -21,9 +21,14 @@
 
       const MainPage = () => {
         const [message, setMessage] = useState("");
+        const [language, setLanguage] = useState("es");
 
         const handleInputChange = (event) => {
           setMessage(event.target.value);
+        };
+
+        const handleLanguageChange = (event) => {
+          setLanguage(event.target.value);
         };
 
         return (
@@ -35,6 +40,19 @@
               value={message} 
               onChange={handleInputChange} 
             />
+            <div>
+            <br></br>
+              <label htmlFor="language-select">Seleccione el idioma:</label>
+              <select 
+                id="language-select" 
+                value={language} 
+                onChange={handleLanguageChange}
+              >
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+                <option value="fr">Francés</option>
+              </select>
+            </div>
           </div>
         );
       }
