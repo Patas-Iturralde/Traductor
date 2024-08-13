@@ -1,0 +1,10 @@
+Estos términos usados comunmente en los idiomas a traducir, nos servirán como guía para nuestra aplicación
+
+Español:
+Hola, Adiós, Por favor, Gracias, Sí, No, Perdón, Casa, Comida, Agua, Amigo, Familia, Trabajo, Escuela, Libro, Día, Noche, Amor, Feliz, Triste.
+
+Inglés:
+Hello, Goodbye, Please, Thank you, Yes, No, Sorry, House, Food, Water, Friend, Family, Work, School, Book, Day, Night, Love, Happy, Sad.
+
+Francés:
+Bonjour, Au revoir, S'il vous plaît, Merci, Oui, Non, Désolé, Maison, Nourriture, Eau, Ami(e), Famille, Travail, École, Livre, Jour, Nuit, Amour, Heureux/Heureuse, Triste.
