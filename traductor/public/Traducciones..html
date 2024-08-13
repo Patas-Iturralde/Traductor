@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keflowers Servicios:</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%; 
+            text-align: center;
+        }
+        h1 {
+            color: #2a7b3d;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        select, button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        select {
+            width: calc(100% - 22px);
+        }
+        button {
+            background-color: #2a7b3d;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #235e33;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Keflowers Servicio de soporte de Traduccion:</h1>
+        <textarea id="inputText" placeholder="Ingrese el texto a traducir...."></textarea>
+        <br>
+        <select id="languageSelect">
+            <option value="es">Español</option>
+            <option value="fr">Frances</option>
+            <option value="en">Ingles</option>
+        </select>
+        <br>
+        <button onclick="translateText()">Translate</button>
+
+        <h2>Texto a traducir</h2>
+        <textarea id="outputText" readonly></textarea>
+        <footer>&copy; 2024 Keflowers</footer>
+    </div>
+
+    <script>
+        async function translateText() {
+            const inputText = document.getElementById('inputText').value;
+            const targetLang = document.getElementById('languageSelect').value;
+            
+            const apiKey = 'YOUR_GOOGLE_API_KEY';
+            const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
+            const data = {
+                q: inputText,
+                target: targetLang
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                const translatedText = result.data.translations[0].translatedText;
+                document.getElementById('outputText').value = translatedText;
+            } catch (error) {
+                console.error('Error de traduccion', error);
+            }
+        }
+    </script>
+</body>
+</html>
