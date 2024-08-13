@@ -131,6 +131,10 @@
           }
         };
 
+        const activateTranslation = () => {
+          alert('Sistema de traducción activado');
+        };
+
         return (
           <div id="main-container">
             <h1 id="main-title">Traductor de mensajería instantánea de KEFLOWERS</h1>
@@ -159,6 +163,8 @@
               </select>
             </div>
             <br />
+            <button onClick={activateTranslation}>Sugerencia de Traducción</button>
+            <br /><br />
             <button 
               id="send-button" 
               onClick={handleSendMessage}
