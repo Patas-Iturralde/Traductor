@@ -109,12 +109,18 @@
         const [messages, setMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
-        const handleInputChange = (event) => {
-          const input = event.target.value;
-          const regex = /^[a-zA-Z0-9\s]*$/; // Expresión regular para permitir solo letras, números y espacios
+        const sanitizeInput = (input) => {
+          // Eliminar caracteres que podrían ser peligrosos
+          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
+        };
 
-          if (regex.test(input)) {
-            setMessage(input);
+        const handleInputChange = (event) => {
+          const rawInput = event.target.value;
+          const regex = /^[a-zA-Z0-9\s]*$/; // Permitir solo letras, números y espacios
+
+          if (regex.test(rawInput)) {
+            const sanitizedInput = sanitizeInput(rawInput);
+            setMessage(sanitizedInput);
           } else {
             alert("El mensaje contiene caracteres especiales no permitidos.");
           }
