@@ -118,8 +118,11 @@
         };
 
         const handleSendMessage = () => {
-          if (message.trim() !== "") {
-            setMessages([...messages, { text: message, sender: "user", language }]);
+          // Eliminar espacios adicionales entre palabras
+          const trimmedMessage = message.replace(/\s+/g, ' ').trim();
+
+          if (trimmedMessage !== "") {
+            setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
             setMessage(""); // Limpiar el campo después de enviar
             // Simular una respuesta del otro extremo
             setTimeout(() => {
