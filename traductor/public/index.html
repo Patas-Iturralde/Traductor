@@ -124,6 +124,17 @@
     const handleLanguageChange = (event) => {
       setLanguage(event.target.value);
     };--126
+    const handleSendMessage = () => {
+      if (message.trim() !== "") {
+        setMessages([...messages, { text: message, sender: "user", language }]);
+        setMessage(""); // Limpiar el campo después de enviar
+        // Simular una respuesta del otro extremo
+        setTimeout(() => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: "Respuesta automática", sender: "other", language }
+          ]);
+        }, 1000);--137
 <<<<<<< HEAD
     <!-- Added buttons -->
     <button>Enviar</button>
