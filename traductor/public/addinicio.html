@@ -3,12 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Traductor de Idiomas</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlace a un archivo CSS opcional -->
+    <title>Registro - Keneflowers Traductor de Idiomas</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+
+        /* Estilos del formulario */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            background-color: #4A90E2;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #357ABD;
+        }
+
+        /* Estilos del enlace */
+        p {
+            margin-top: 20px;
+        }
+
+        a {
+            color: #4A90E2;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Registro</h2>
+        <h2>Registro en Keneflowers</h2>
         <form action="/register" method="POST">
             <div class="form-group">
                 <label for="username">Nombre de usuario:</label>
@@ -32,3 +109,4 @@
     </div>
 </body>
 </html>
+
