@@ -36,3 +36,32 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 # Entrenar el modelo
 model.fit(secuencias_esp,  
  secuencias_ing, epochs=10, batch_size=64)
+
+#Opcion 2
+
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Embedding, Transformer
+from tensorflow.keras.models import Model
+
+
+inputs = Input(shape=(maxlen_esp,))
+x = Embedding(vocab_size_esp, embedding_dim)(inputs)
+
+# Encoder
+encoder = TransformerEncoder(num_layers=2, num_heads=4, ff_dim=32, ...)
+encoder_output = encoder(x)
+
+# Decoder
+decoder_inputs = Input(shape=(maxlen_ing,))
+decoder_embeddings = Embedding(vocab_size_ing, embedding_dim)(decoder_inputs)
+decoder = TransformerDecoder(num_layers=2, num_heads=4, ff_dim=32, ...)
+decoder_outputs = decoder(decoder_embeddings, encoder_output)
+
+
+outputs = Dense(vocab_size_ing, activation='softmax')(decoder_outputs)
+
+model = Model(inputs=[inputs, decoder_inputs], outputs=outputs)
+
+
+model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.fit([secuencias_esp, secuencias_ing[:, :-1]], secuencias_ing[:, 1:], epochs=10, batch_size=64)
