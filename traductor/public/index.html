@@ -11,18 +11,6 @@
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-<<<<<<< HEAD
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the public folder during the build.
-      Only files inside the public folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running npm run build.
-    -->
-    <title>Rama Alexis Salguero Sitio 1</title>
-=======
     <title>Traductor de mensajería instantánea de KEFLOWERS</title>
     <style>
       body {
@@ -109,62 +97,23 @@
         background-color: #f5f5f5;
       }
     </style>
->>>>>>> b3b8610a97e8f1c5a69d6f37e84bf37058c4635a
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    --117const handleInputChange = (event) => {
-      const inputText = event.target.value;
-      if (inputText.length <= 100) {
-        setMessage(inputText);
-      }
-    };
-################################################
-    const handleLanguageChange = (event) => {
-      setLanguage(event.target.value);
-    };--126
-    const handleSendMessage = () => {
-      if (message.trim() !== "") {
-        setMessages([...messages, { text: message, sender: "user", language }]);
-        setMessage(""); // Limpiar el campo después de enviar
-        // Simular una respuesta del otro extremo
-        setTimeout(() => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { text: "Respuesta automática", sender: "other", language }
-          ]);
-        }, 1000);--137
-<<<<<<< HEAD
-    <!-- Added buttons -->
-    <button>Enviar</button>
-    <button onclick="activateTranslation()">Sugerencia de Traducción</button>
-    <script>
-      function activateTranslation() {
-        // Aquí puedes agregar la lógica para activar el sistema de traducción
-        alert('Sistema de traducción activado');
-      }
-    </script>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-=======
     <script type="text/babel">
       const { useState } = React;
->>>>>>> b3b8610a97e8f1c5a69d6f37e84bf37058c4635a
 
       const MainPage = () => {
         const [message, setMessage] = useState("");
         const [messages, setMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
-<<<<<<< HEAD
-      To begin the development, run npm start or yarn start.
-      To create a production bundle, use npm run build or yarn build.
-    -->
-=======
         const handleInputChange = (event) => {
-          setMessage(event.target.value);
+          const inputText = event.target.value;
+          if (inputText.length <= 100) {
+            setMessage(inputText);
+          }
         };
 
         const handleLanguageChange = (event) => {
@@ -202,6 +151,7 @@
               id="message-input" 
               value={message} 
               onChange={handleInputChange} 
+              placeholder="Máximo 100 caracteres"
             />
             <br />
             <div>
@@ -249,6 +199,5 @@
 
     <!-- Load Babel Compiler -->
     <script src="https://unpkg.com/babel-standalone/babel.min.js"></script>
->>>>>>> b3b8610a97e8f1c5a69d6f37e84bf37058c4635a
   </body>
 </html>
