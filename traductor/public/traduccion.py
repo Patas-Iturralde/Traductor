@@ -3,10 +3,16 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences  
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers  
- import Embedding, LSTM, Dense
+from tensorflow.keras.layers import Embedding, LSTM, Dense
 
 # Cargar y preprocesar los datos (suponiendo que tienes un archivo con pares de oraciones)
+datos_esp = []
+datos_ing = []
+longitud_maxima_esp = []
+longitud_maxima_ing = []
+vocab_size_esp = []
+vocab_size_ing = []
+embedding_dim  = []
 
 # Crear los tokenizadores
 tokenizer_esp = Tokenizer()
@@ -44,17 +50,21 @@ from tensorflow.keras.layers import Input, Embedding, Transformer
 from tensorflow.keras.models import Model
 
 
+maxlen_esp = 2
+
 inputs = Input(shape=(maxlen_esp,))
 x = Embedding(vocab_size_esp, embedding_dim)(inputs)
 
+
 # Encoder
-encoder = TransformerEncoder(num_layers=2, num_heads=4, ff_dim=32, ...)
+encoder = TransformerEncoder(num_layers=2, num_heads=4, ff_dim=32)
 encoder_output = encoder(x)
 
 # Decoder
+maxlen_ing = 5
 decoder_inputs = Input(shape=(maxlen_ing,))
 decoder_embeddings = Embedding(vocab_size_ing, embedding_dim)(decoder_inputs)
-decoder = TransformerDecoder(num_layers=2, num_heads=4, ff_dim=32, ...)
+decoder = TransformerDecoder(num_layers=2, num_heads=4, ff_dim=32)
 decoder_outputs = decoder(decoder_embeddings, encoder_output)
 
 
