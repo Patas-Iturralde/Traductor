@@ -109,11 +109,21 @@
         const [messages, setMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
+        const sanitizeInput = (input) => {
+          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
+        };
+
+        const escapeHtml = (text) => {
+          return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        };
+
         const handleInputChange = (event) => {
-          const inputText = event.target.value;
-          if (inputText.length <= 100) {
-            setMessage(inputText);
-          }
+          setMessage(event.target.value);
         };
 
         const handleLanguageChange = (event) => {
@@ -121,8 +131,10 @@
         };
 
         const handleSendMessage = () => {
-          if (message.trim() !== "") {
-            setMessages([...messages, { text: message, sender: "user", language }]);
+          const trimmedMessage = message.replace(/\s+/g, ' ').trim();
+
+          if (trimmedMessage !== "") {
+            setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
             setMessage(""); // Limpiar el campo después de enviar
             // Simular una respuesta del otro extremo
             setTimeout(() => {
@@ -131,6 +143,8 @@
                 { text: "Respuesta automática", sender: "other", language }
               ]);
             }, 1000);
+          } else {
+            alert("No se puede enviar un mensaje vacío");
           }
         };
 
