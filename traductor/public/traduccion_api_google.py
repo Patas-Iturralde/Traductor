@@ -1,4 +1,18 @@
 from googletrans import Translator
+import requests
+
+
+#consumo API
+
+url = ""
+params = {
+    "api_key": "",
+    "mensaje": "mensaje",
+    "idioma": "idioma"    
+}
+
+response = requests.get(url, params=params)
+data = response.json()
 
 def traducir_espanol_ingles(mensaje):
     
