@@ -110,7 +110,6 @@
         const [language, setLanguage] = useState("es");
 
         const sanitizeInput = (input) => {
-          // Eliminar caracteres que podrían ser peligrosos
           return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
         };
 
@@ -129,11 +128,11 @@
 
           const regex = /^[a-zA-Z0-9\s]*$/; // Permitir solo letras, números y espacios
 
-          if (regex.test(rawInput)) {
+          if (rawInput.length <= 100 && regex.test(rawInput)) {
             const sanitizedInput = sanitizeInput(rawInput);
             setMessage(sanitizedInput);
           } else {
-            alert("El mensaje contiene caracteres especiales no permitidos.");
+            alert("El mensaje contiene caracteres especiales no permitidos o supera el límite de 100 caracteres.");
           }
         };
 
@@ -142,7 +141,6 @@
         };
 
         const handleSendMessage = () => {
-          // Eliminar espacios adicionales entre palabras
           const trimmedMessage = message.replace(/\s+/g, ' ').trim();
 
           if (trimmedMessage !== "") {
@@ -177,6 +175,7 @@
               id="message-input" 
               value={message} 
               onChange={handleInputChange} 
+              placeholder="Máximo 100 caracteres"
             />
             <br />
             <div>
