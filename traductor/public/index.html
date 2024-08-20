@@ -109,8 +109,32 @@
         const [messages, setMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
+        const sanitizeInput = (input) => {
+          // Eliminar caracteres que podrían ser peligrosos
+          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
+        };
+
+        const escapeHtml = (text) => {
+          return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        };
+
         const handleInputChange = (event) => {
-          setMessage(event.target.value);
+          let rawInput = event.target.value;
+          rawInput = escapeHtml(rawInput); // Escapar caracteres especiales
+
+          const regex = /^[a-zA-Z0-9\s]*$/; // Permitir solo letras, números y espacios
+
+          if (regex.test(rawInput)) {
+            const sanitizedInput = sanitizeInput(rawInput);
+            setMessage(sanitizedInput);
+          } else {
+            alert("El mensaje contiene caracteres especiales no permitidos.");
+          }
         };
 
         const handleLanguageChange = (event) => {
