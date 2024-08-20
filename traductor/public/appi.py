@@ -1,31 +1,59 @@
 from flask import Flask, request, jsonify
+import requests
 
 app = Flask(__name__)
 
-# Variable global para almacenar el último mensaje recibido
-last_message = None
+TRANSLATE_API_URL = "https://api.cualquiera.com/translate"
+API_KEY = "YOUR_API_KEY"
 
-@app.route('/receive', methods=['POST'])
-def receive_message():
-    global last_message
+@app.route('/translate', methods=['POST'])
+def translate():
     data = request.json
-    message = data.get('message')
+    text = data.get('text')
+    target_language = data.get('target_language')
+    source_language = data.get('source_language', 'es')  # Default source language is Spanish
 
-    if not message:
-        return jsonify({"error": "Missing 'message' in request"}), 400
+    if not text or not target_language:
+        return jsonify({"error": "Missing 'text' or 'target_language' in request"}), 400
 
-    last_message = message
-    return jsonify({"status": "Message received", "message": last_message})
+    # Translate text to the target language
+    translated_text = translate_text(text, source_language, target_language)
 
-@app.route('/consume', methods=['GET'])
-def consume_message():
-    global last_message
+    if translated_text is None:
+        return jsonify({"error": "Translation failed"}), 500
+    return jsonify({"translated_text": translated_text})
+@app.route('/reverse_translate', methods=['POST'])
+def reverse_translate():
+    data = request.json
+    text = data.get('text')
+    original_language = data.get('original_language', 'es')  # Default original language is Spanish
+    current_language = data.get('current_language')
 
-    if last_message is None:
-        return jsonify({"error": "No message available"}), 404
+    if not text or not current_language:
+        return jsonify({"error": "Missing 'text' or 'current_language' in request"}), 400
 
-    # Return the last message received
-    return jsonify({"message": last_message})
+    # Translate text back to the original language
+    translated_text = translate_text(text, current_language, original_language)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    if translated_text is None:
+        return jsonify({"error": "Translation failed"}), 500
+
+    return jsonify({"translated_text": translated_text})
+
+def translate_text(text, source_language, target_language):
+    payload = {
+        'q': text,
+        'source': source_language,
+        'target': target_language,
+        'format': 'text'
+    }
+    headers = {
+        'Authorization': f'Bearer {API_KEY}'
+    }
+    response = requests.post(TRANSLATE_API_URL, json=payload, headers=headers)
+
+    if response.status_code == 200:
+        return response.json().get('translatedText')
+    else:
+        return None
+
