@@ -148,20 +148,23 @@
 
         const handleInputChange = (event) => {
           const rawInput = event.target.value;
-
-          if (rawInput.length <= 100) {
-            setMessage(rawInput);
-          } else {
-            alert("El mensaje supera el límite de 100 caracteres.");
-          }
-        };
-
-        const handleLanguageChange = (event) => {
-          setLanguage(event.target.value);
+          setMessage(rawInput);
         };
 
         const handleSendMessage = () => {
           const trimmedMessage = message.trim();
+
+          // Validación del mensaje
+          const regex = /^[a-zA-Z0-9\s]*$/; // Solo permite letras, números y espacios
+          if (!regex.test(trimmedMessage)) {
+            alert("El mensaje contiene caracteres especiales no permitidos.");
+            return;
+          }
+
+          if (trimmedMessage.length > 100) {
+            alert("El mensaje supera el límite de 100 caracteres.");
+            return;
+          }
 
           if (trimmedMessage !== "") {
             setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
@@ -206,7 +209,7 @@
               <select 
                 id="language-select" 
                 value={language} 
-                onChange={handleLanguageChange}
+                onChange={(e) => setLanguage(e.target.value)}
               >
                 <option value="es">Español</option>
                 <option value="en">Inglés</option>
@@ -231,7 +234,7 @@
             </div>
 
             <div id="other-messages-container">
-              <h3>Historial de mensajes</h3>
+              <h3>Mensajes almacenados del otro extremo</h3>
               {storedMessages.map((msg, index) => (
                 <div key={index} className="stored-message">
                   {msg.text} ({msg.language})
