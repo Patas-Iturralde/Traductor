@@ -2,10 +2,8 @@ from flask import Flask, request, jsonify
 import requests
 
 app = Flask(__name__)
-
 TRANSLATE_API_URL = "https://api.cualquiera.com/translate"
 API_KEY = "YOUR_API_KEY"
-
 @app.route('/translate', methods=['POST'])
 def translate():
     data = request.json
@@ -39,7 +37,6 @@ def reverse_translate():
         return jsonify({"error": "Translation failed"}), 500
 
     return jsonify({"translated_text": translated_text})
-
 def translate_text(text, source_language, target_language):
     payload = {
         'q': text,
