@@ -238,7 +238,18 @@ const handleSendMessage = async () => {
     alert("No se puede enviar un mensaje vacío");
   }
 };
-----------------
+--------
+
+if (response.ok) {
+  const data = await response.json();
+  setMessages((prevMessages) => [
+    ...prevMessages,
+    { text: data.translatedMessage, sender: "other", language: data.language },
+  ]);
+} else {
+  alert("Error al traducir el mensaje.");
+}
+---------
       ReactDOM.render(
         <React.StrictMode>
           <MainPage />
