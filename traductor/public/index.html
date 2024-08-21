@@ -106,6 +106,32 @@
         align-self: flex-start;
         text-align: left;
       }
+
+      #other-messages-container {
+        margin-top: 40px;
+        text-align: left;
+        max-width: 600px;
+        margin: 40px auto;
+        background-color: #f2f2f2; /* Fondo ligeramente más oscuro */
+        padding: 15px;
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      }
+
+      #other-messages-container h3 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 24px;
+      }
+
+      .stored-message {
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        background-color: #e6e6e6; /* Fondo gris claro para mensajes almacenados */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
     </style>
   </head>
   <body>
@@ -117,32 +143,16 @@
       const MainPage = () => {
         const [message, setMessage] = useState("");
         const [messages, setMessages] = useState([]);
+        const [storedMessages, setStoredMessages] = useState([]); // Almacena los mensajes del otro extremo
         const [language, setLanguage] = useState("es");
 
-        const sanitizeInput = (input) => {
-          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
-        };
-
-        const escapeHtml = (text) => {
-          return text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"//g, "&quot;")
-            .replace(/'/g, "&#039;");
-        };
-
         const handleInputChange = (event) => {
-          let rawInput = event.target.value;
-          rawInput = escapeHtml(rawInput); // Escapar caracteres especiales
+          const rawInput = event.target.value;
 
-          const regex = /^[a-zA-Z0-9\s]*$/; // Permitir solo letras, números y espacios
-
-          if (rawInput.length <= 100 && regex.test(rawInput)) {
-            const sanitizedInput = sanitizeInput(rawInput);
-            setMessage(sanitizedInput);
+          if (rawInput.length <= 100) {
+            setMessage(rawInput);
           } else {
-            alert("El mensaje contiene caracteres especiales no permitidos o supera el límite de 100 caracteres.");
+            alert("El mensaje supera el límite de 100 caracteres.");
           }
         };
 
@@ -151,21 +161,24 @@
         };
 
         const handleSendMessage = () => {
-          const trimmedMessage = message.replace(/\s+/g, ' ').trim();
+          const trimmedMessage = message.trim();
 
           if (trimmedMessage !== "") {
             setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
             setMessage(""); // Limpiar el campo después de enviar
             // Simular una respuesta del otro extremo
             setTimeout(() => {
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                { text: "Respuesta automática", sender: "other", language }
-              ]);
+              const newMessage = { text: "Respuesta automática", sender: "other", language };
+              setMessages((prevMessages) => [...prevMessages, newMessage]);
+              storeMessage(newMessage); // Almacenar el mensaje del otro extremo
             }, 1000);
           } else {
             alert("No se puede enviar un mensaje vacío");
           }
+        };
+
+        const storeMessage = (message) => {
+          setStoredMessages((prevStoredMessages) => [...prevStoredMessages, message]);
         };
 
         const activateTranslation = () => {
@@ -212,6 +225,15 @@
             <div id="message-list">
               {messages.map((msg, index) => (
                 <div key={index} className={`message ${msg.sender}`}>
+                  {msg.text} ({msg.language})
+                </div>
+              ))}
+            </div>
+
+            <div id="other-messages-container">
+              <h3>Historial de mensajes</h3>
+              {storedMessages.map((msg, index) => (
+                <div key={index} className="stored-message">
                   {msg.text} ({msg.language})
                 </div>
               ))}
