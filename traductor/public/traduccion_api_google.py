@@ -1,6 +1,6 @@
 from googletrans import Translator
 import requests
-
+import json
 
 #consumo API
 
@@ -27,6 +27,29 @@ print("Mensaje: \n")
 mensaje = input()
 traducir_espanol_ingles(mensaje)
 
+#envio de mensaje traducido a la api
+
+data = {
+   "mensaje":mensaje
+}
+
+data_json = json.dumps(data)
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+response = requests.post(url, data=data_json, headers=headers)
+
+if response.status_code == 200:
+
+    respuesta = response.json()
+
+    print(respuesta)
+
+else:
+
+    print("Error:", response.status_code)
 
 #opcion 2
 from azure.ai.textanalytics import TextAnalyticsClient
