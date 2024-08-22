@@ -217,7 +217,7 @@
               </select>
             </div>
             <br />
-            <button onClick={activateTranslation}>Sugerencia de Traducción</button>
+            <button onClick={activateTranslation}>Activar traducción</button>
             <br /><br />
             <button 
               id="send-button" 
@@ -234,7 +234,7 @@
             </div>
 
             <div id="other-messages-container">
-              <h3>Mensajes almacenados del otro extremo</h3>
+              <h3>Historial de traducción</h3>
               {storedMessages.map((msg, index) => (
                 <div key={index} className="stored-message">
                   {msg.text} ({msg.language})
