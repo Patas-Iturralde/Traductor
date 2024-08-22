@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
+            background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e8 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -17,46 +17,65 @@
 
         .container {
             background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            text-align: center;
         }
 
         h2 {
-            text-align: center;
             color: #4CAF50;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         form {
             display: flex;
             flex-direction: column;
+            width: 100%;
         }
 
         label {
             margin-bottom: 5px;
-            color: #555;
+            color: #333;
+            font-weight: 500;
+            text-align: left;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 25px;
             font-size: 14px;
+            background-color: #f9f9f9;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50;
+            outline: none;
         }
 
         button {
-            padding: 10px;
+            padding: 12px;
             background-color: #4CAF50;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -64,17 +83,26 @@
         }
 
         .switch-form {
-            text-align: center;
-            margin-top: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
         }
 
         .switch-form a {
             color: #4CAF50;
             text-decoration: none;
+            font-weight: bold;
         }
 
         .switch-form a:hover {
             text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            color: green;
+            margin-top: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -103,29 +131,82 @@
         <!-- Formulario de Inicio de Sesión -->
         <form id="login-form" style="display: none;">
             <label for="email-login">Correo Electrónico</label>
+            <br>
+            
             <input type="email" id="email-login" name="email-login" placeholder="Ingresa tu correo electrónico" required>
 
+            <br/>
+
+            
             <label for="password-login">Contraseña</label>
+            <br>
             <input type="password" id="password-login" name="password-login" placeholder="Ingresa tu contraseña" required>
 
+            <br/>
             <button type="submit">Iniciar Sesión</button>
 
             <div class="switch-form">
                 ¿No tienes una cuenta? <a href="#" onclick="switchToRegister()">Regístrate aquí</a>
             </div>
         </form>
+
+        <!-- Mensaje de éxito -->
+        <p id="success-message" class="success-message">
+            ¡Registro exitoso! Bienvenido a KeFlowers, ahora puedes iniciar sesión.
+        </p>
     </div>
 
     <script>
+        // Simulación de base de datos para almacenar usuarios
+        const users = [];
+
         function switchToLogin() {
             document.getElementById('register-form').style.display = 'none';
             document.getElementById('login-form').style.display = 'block';
+            document.getElementById('success-message').style.display = 'none';
         }
 
         function switchToRegister() {
             document.getElementById('register-form').style.display = 'block';
             document.getElementById('login-form').style.display = 'none';
         }
+
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Recoge los datos del registro
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Agregar usuario a la "base de datos"
+            users.push({ nombre, email, password });
+
+            // Mostrar mensaje de éxito
+            document.getElementById('success-message').style.display = 'block';
+
+            // Cambiar al formulario de inicio de sesión
+            switchToLogin();
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Recoge los datos del login
+            const emailLogin = document.getElementById('email-login').value;
+            const passwordLogin = document.getElementById('password-login').value;
+
+            // Buscar usuario en la "base de datos"
+            const user = users.find(user => user.email === emailLogin && user.password === passwordLogin);
+
+            if (user) {
+                // Redirigir a index.html si el usuario es encontrado
+                window.location.href = 'index.html';
+            } else {
+                // Mostrar error si las credenciales no son válidas
+                alert('Correo electrónico o contraseña incorrectos');
+            }
+        });
     </script>
 </body>
 </html>
