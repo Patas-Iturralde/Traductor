@@ -132,18 +132,95 @@
         background-color: #e6e6e6; /* Fondo gris claro para mensajes almacenados */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+
+      #faq-container {
+        text-align: left;
+        max-width: 800px;
+        margin: 40px auto;
+        background-color: #ffffff; /* Fondo blanco para el FAQ */
+        padding: 20px;
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+      }
+
+      #faq-container h2 {
+        margin-top: 0;
+        color: #333;
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .faq-question {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .faq-answer {
+        margin-bottom: 20px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #555;
+      }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <!-- Sección de mensajes y otras funcionalidades -->
+    
+
+    <!-- Sección de Preguntas Frecuentes -->
+    <div id="faq-container">
+      <h2>Preguntas Frecuentes</h2>
+
+      <div class="faq-item">
+        <div class="faq-question">¿Cómo funciona el traductor de mensajería?</div>
+        <div class="faq-answer">
+          El traductor de mensajería convierte automáticamente los mensajes de un idioma a otro. Simplemente escriba su mensaje, seleccione el idioma de destino y envíelo. El mensaje será traducido antes de enviarse.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">¿Qué idiomas están soportados?</div>
+        <div class="faq-answer">
+          Actualmente, soportamos traducciones entre Español, Inglés y Francés. Estamos trabajando para añadir más idiomas en el futuro.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">¿Mis mensajes están seguros?</div>
+        <div class="faq-answer">
+          Sí, todos los mensajes son procesados de manera segura y la privacidad está garantizada. No almacenamos ni compartimos sus mensajes sin su consentimiento.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">¿Puedo desactivar la traducción automática?</div>
+        <div class="faq-answer">
+          Sí, puede desactivar la traducción automática desde la configuración de la aplicación. Esto le permitirá enviar mensajes en su idioma original sin traducirlos.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">¿Qué debo hacer si encuentro un error en la traducción?</div>
+        <div class="faq-answer">
+          Si encuentra un error en la traducción, puede reportarlo a nuestro equipo de soporte técnico a través del botón "Reportar un error" en la aplicación.
+        </div>
+      </div>
+    </div>
+
+    <!-- Fin de la sección de Preguntas Frecuentes -->
+
     <script type="text/babel">
+      // Aquí va el código JavaScript de la página
       const { useState } = React;
 
       const MainPage = () => {
         const [message, setMessage] = useState("");
         const [messages, setMessages] = useState([]);
-        const [storedMessages, setStoredMessages] = useState([]); // Almacena los mensajes del otro extremo
+        const [storedMessages, setStoredMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
         const handleInputChange = (event) => {
@@ -155,7 +232,7 @@
           const trimmedMessage = message.trim();
 
           // Validación del mensaje
-          const regex = /^[a-zA-Z0-9\s]*$/; // Solo permite letras, números y espacios
+          const regex = /^[a-zA-Z0-9\s]*$/;
           if (!regex.test(trimmedMessage)) {
             alert("El mensaje contiene caracteres especiales no permitidos.");
             return;
@@ -168,12 +245,11 @@
 
           if (trimmedMessage !== "") {
             setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
-            setMessage(""); // Limpiar el campo después de enviar
-            // Simular una respuesta del otro extremo
+            setMessage(""); 
             setTimeout(() => {
               const newMessage = { text: "Respuesta automática", sender: "other", language };
               setMessages((prevMessages) => [...prevMessages, newMessage]);
-              storeMessage(newMessage); // Almacenar el mensaje del otro extremo
+              storeMessage(newMessage);
             }, 1000);
           } else {
             alert("No se puede enviar un mensaje vacío");
@@ -182,10 +258,6 @@
 
         const storeMessage = (message) => {
           setStoredMessages((prevStoredMessages) => [...prevStoredMessages, message]);
-        };
-
-        const activateTranslation = () => {
-          alert('Sistema de traducción activado');
         };
 
         return (
@@ -217,7 +289,7 @@
               </select>
             </div>
             <br />
-            <button onClick={activateTranslation}>Activar traducción</button>
+            <button onClick={() => alert('Sistema de traducción activado')}>Activar traducción</button>
             <br /><br />
             <button 
               id="send-button" 
