@@ -4,7 +4,7 @@ import json
 
 #consumo API
 
-url = "http://localhost:3000/mensaje"
+url = "http://localhost:3000/mensaje_es"
 
 response = requests.get(url)
 data = response.json()
@@ -21,7 +21,27 @@ def traducir_espanol_ingles(mensaje):
 
 
 
-traducir_espanol_ingles(data['mensaje'])
+for mensaje in data:
+
+    mensaje_traducido = traducir_espanol_ingles(mensaje['mensaje'])
+    
+    url_post = "http://localhost:3000/mensaje_en"  # Asumo que el endpoint es /mensaje_en
+ 
+    headers = {'Content-Type': 'application/json'}
+ 
+    data_post = {'mensaje': mensaje_traducido.text}
+ 
+    response_post = requests.post(url_post, headers=headers, json=data_post)
+ 
+ 
+    if response_post.status_code == 200:
+ 
+        print("Mensaje traducido y enviado correctamente")
+ 
+    else:
+ 
+        print("Error al enviar el mensaje traducido")
+        print(response_post.status_code)
 
 #envio de mensaje traducido a la api
 
