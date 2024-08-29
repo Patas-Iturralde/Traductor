@@ -21,6 +21,8 @@ def translate():
         return jsonify({"error": "Translation failed"}), 500
     return jsonify({"translated_text": translated_text})
 @app.route('/reverse_translate', methods=['POST'])
+
+@app.route('/reverse_translate', methods=['POST'])
 def reverse_translate():
     data = request.json
     text = data.get('text')
