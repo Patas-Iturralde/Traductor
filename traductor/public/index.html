@@ -107,32 +107,6 @@
         text-align: left;
       }
 
-      #other-messages-container {
-        margin-top: 40px;
-        text-align: left;
-        max-width: 600px;
-        margin: 40px auto;
-        background-color: #f2f2f2; /* Fondo ligeramente más oscuro */
-        padding: 15px;
-        border-radius: 10px; /* Bordes redondeados */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-      }
-
-      #other-messages-container h3 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: #333;
-        font-size: 24px;
-      }
-
-      .stored-message {
-        padding: 12px;
-        margin-bottom: 10px;
-        border-radius: 8px;
-        background-color: #e6e6e6; /* Fondo gris claro para mensajes almacenados */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
       #faq-container {
         text-align: left;
         max-width: 800px;
@@ -168,140 +142,55 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
-    <!-- Sección de mensajes y otras funcionalidades -->
-    
-
-    <!-- Sección de Preguntas Frecuentes -->
-    <div id="faq-container">
-      <h2>Preguntas Frecuentes</h2>
-
-      <div class="faq-item">
-        <div class="faq-question">¿Cómo funciona el traductor de mensajería?</div>
-        <div class="faq-answer">
-          El traductor de mensajería convierte automáticamente los mensajes de un idioma a otro. Simplemente escriba su mensaje, seleccione el idioma de destino y envíelo. El mensaje será traducido antes de enviarse.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">¿Qué idiomas están soportados?</div>
-        <div class="faq-answer">
-          Actualmente, soportamos traducciones entre Español, Inglés y Francés. Estamos trabajando para añadir más idiomas en el futuro.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">¿Mis mensajes están seguros?</div>
-        <div class="faq-answer">
-          Sí, todos los mensajes son procesados de manera segura y la privacidad está garantizada. No almacenamos ni compartimos sus mensajes sin su consentimiento.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">¿Puedo desactivar la traducción automática?</div>
-        <div class="faq-answer">
-          Sí, puede desactivar la traducción automática desde la configuración de la aplicación. Esto le permitirá enviar mensajes en su idioma original sin traducirlos.
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <div class="faq-question">¿Qué debo hacer si encuentro un error en la traducción?</div>
-        <div class="faq-answer">
-          Si encuentra un error en la traducción, puede reportarlo a nuestro equipo de soporte técnico a través del botón "Reportar un error" en la aplicación.
-        </div>
-      </div>
-    </div>
-
-    <!-- Fin de la sección de Preguntas Frecuentes -->
-
     <script type="text/babel">
-      // Aquí va el código JavaScript de la página
       const { useState } = React;
 
       const MainPage = () => {
         const [message, setMessage] = useState("");
         const [messages, setMessages] = useState([]);
-        const [storedMessages, setStoredMessages] = useState([]);
         const [language, setLanguage] = useState("es");
-
-        const sanitizeInput = (input) => {
-          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
-        };
-
-        const escapeHtml = (text) => {
-          return text
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"//g, "&quot;")
-            .replace(/'/g, "&#039;");
-        };
 
         const handleInputChange = (event) => {
           setMessage(event.target.value);
         };
 
-        const handleLanguageChange = (event) => {
-          setLanguage(event.target.value);
-        };
-
-        const handleSendMessage = () => {
-          const trimmedMessage = message.trim();
-
-          // Validación del mensaje
-          const regex = /^[a-zA-Z0-9\s]*$/;
-          if (!regex.test(trimmedMessage)) {
-            alert("El mensaje contiene caracteres especiales no permitidos.");
-            return;
-          }
-
-          if (trimmedMessage.length > 100) {
-            alert("El mensaje supera el límite de 100 caracteres.");
-            return;
-          }
+        const handleSendMessage = async () => {
+          const trimmedMessage = message.replace(/\s+/g, ' ').trim();
 
           if (trimmedMessage !== "") {
+            // Agregar el mensaje localmente
             setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
             setMessage(""); // Limpiar el campo después de enviar
 
-            // Llamar a la API de traducción
-            translateMessage(trimmedMessage, language);
+            try {
+              // Llamada a la API para traducir el mensaje
+              const response = await fetch('https://tu-api-url.com/translate', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  message: trimmedMessage,
+                  language: language,
+                }),
+              });
+
+              if (response.ok) {
+                const data = await response.json();
+                setMessages((prevMessages) => [
+                  ...prevMessages,
+                  { text: data.translatedMessage, sender: "other", language: data.language },
+                ]);
+              } else {
+                alert("Error al traducir el mensaje.");
+              }
+            } catch (error) {
+              console.error('Error:', error);
+              alert("Hubo un problema con la solicitud de traducción.");
+            }
           } else {
             alert("No se puede enviar un mensaje vacío");
           }
-        };
-
-        const translateMessage = async (text, targetLanguage) => {
-          try {
-            const response = await fetch('URL_DE_LA_API_DE_TRADUCCION', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                message: text,
-                targetLanguage: targetLanguage,
-              }),
-            });
-
-            if (response.ok) {
-              const data = await response.json();
-              //Procesamiento de la respuesta de la API
-              const translatedMessage = data.translatedText; 
-
-              setMessages((prevMessages) => [
-                ...prevMessages,
-                { text: translatedMessage, sender: "other", language: targetLanguage }
-              ]);
-            } else {
-              console.error('Error al traducir el mensaje:', response.statusText);
-            }
-          } catch (error) {
-            console.error('Error al procesar la solicitud:', error);
-          }
-        };
-
-        const activateTranslation = () => {
-          alert('Sistema de traducción activado');
         };
 
         return (
@@ -310,7 +199,6 @@
             <p id="main-description">
               Los mensajes que se envían en esta plataforma son seguros y serán traducidos al instante.
             </p>
-
             <h2 id="message-input-title">Ingrese el mensaje a traducir</h2>
             <input 
               type="text" 
@@ -333,12 +221,7 @@
               </select>
             </div>
             <br />
-            <button onClick={() => alert('Sistema de traducción activado')}>Activar traducción</button>
-            <br /><br />
-            <button 
-              id="send-button" 
-              onClick={handleSendMessage}
-            >
+            <button id="send-button" onClick={handleSendMessage}>
               Enviar
             </button>
             <div id="message-list">
@@ -349,69 +232,42 @@
               ))}
             </div>
 
-            <div id="other-messages-container">
-              <h3>Historial de traducción</h3>
-              {storedMessages.map((msg, index) => (
-                <div key={index} className="stored-message">
-                  {msg.text} ({msg.language})
+            <div id="faq-container">
+              <h2>Preguntas Frecuentes</h2>
+              <div className="faq-item">
+                <div className="faq-question">¿Cómo funciona el traductor de mensajería?</div>
+                <div className="faq-answer">
+                  El traductor de mensajería convierte automáticamente los mensajes de un idioma a otro. Simplemente escriba su mensaje, seleccione el idioma de destino y envíelo. El mensaje será traducido antes de enviarse.
                 </div>
-              ))}
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">¿Qué idiomas están soportados?</div>
+                <div className="faq-answer">
+                  Actualmente, soportamos traducciones entre Español, Inglés y Francés. Estamos trabajando para añadir más idiomas en el futuro.
+                </div>
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">¿Mis mensajes están seguros?</div>
+                <div className="faq-answer">
+                  Sí, todos los mensajes son procesados de manera segura y la privacidad está garantizada. No almacenamos ni compartimos sus mensajes sin su consentimiento.
+                </div>
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">¿Puedo desactivar la traducción automática?</div>
+                <div className="faq-answer">
+                  Sí, puede desactivar la traducción automática desde la configuración de la aplicación. Esto le permitirá enviar mensajes en su idioma original sin traducirlos.
+                </div>
+              </div>
+              <div className="faq-item">
+                <div className="faq-question">¿Qué debo hacer si encuentro un error en la traducción?</div>
+                <div className="faq-answer">
+                  Si encuentra un error en la traducción, puede reportarlo a nuestro equipo de soporte técnico a través del botón "Reportar un error" en la aplicación.
+                </div>
+              </div>
             </div>
           </div>
         );
-      }
-const handleSendMessage = async () => {
-  const trimmedMessage = message.replace(/\s+/g, ' ').trim();
-
-  if (trimmedMessage !== "") {
-    // Agregar el mensaje localmente
-    setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
-    setMessage(""); // Limpiar el campo después de enviar
-
-    try {
-      // Hacer la llamada a la API para traducir el mensaje
-      const response = await fetch('https://tu-api-url.com/translate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: trimmedMessage,
-          language: language,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: data.translatedMessage, sender: "other", language: data.language },
-        ]);
-      } else {
-        alert("Error al traducir el mensaje.");
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert("Hubo un problema con la solicitud de traducción.");
-    }
-  } else {
-    alert("No se puede enviar un mensaje vacío");
-  }
-};
-api
-
-
-if (response.ok) {
-  const data = await response.json();
-  setMessages((prevMessages) => [
-    ...prevMessages,
-    { text: data.translatedMessage, sender: "other", language: data.language },
-  ]);
-} else {
-  alert("Error al traducir el mensaje.");
-}
-
-Api
+      };
 
       ReactDOM.render(
         <React.StrictMode>
@@ -420,6 +276,7 @@ Api
         document.getElementById('root')
       );
     </script>
+
     <!-- Load React. -->
     <script src="https://unpkg.com/react/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom/umd/react-dom.development.js" crossorigin></script>
