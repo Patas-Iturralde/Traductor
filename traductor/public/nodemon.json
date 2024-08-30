@@ -1,0 +1,9 @@
+{
+
+    "watch": ["api.js"],
+  
+    "ext": "js",
+  
+    "exec": "node"
+  
+  }
