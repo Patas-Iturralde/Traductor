@@ -223,6 +223,19 @@
         const [storedMessages, setStoredMessages] = useState([]);
         const [language, setLanguage] = useState("es");
 
+        const sanitizeInput = (input) => {
+          return input.replace(/<|>|"|'/g, ""); // Eliminar caracteres <, >, ", '
+        };
+
+        const escapeHtml = (text) => {
+          return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"//g, "&quot;")
+            .replace(/'/g, "&#039;");
+        };
+
         const handleInputChange = (event) => {
           setMessage(event.target.value);
         };
@@ -248,19 +261,47 @@
 
           if (trimmedMessage !== "") {
             setMessages([...messages, { text: trimmedMessage, sender: "user", language }]);
-            setMessage(""); 
-            setTimeout(() => {
-              const newMessage = { text: "Respuesta automática", sender: "other", language };
-              setMessages((prevMessages) => [...prevMessages, newMessage]);
-              storeMessage(newMessage);
-            }, 1000);
+            setMessage(""); // Limpiar el campo después de enviar
+
+            // Llamar a la API de traducción
+            translateMessage(trimmedMessage, language);
           } else {
             alert("No se puede enviar un mensaje vacío");
           }
         };
 
-        const storeMessage = (message) => {
-          setStoredMessages((prevStoredMessages) => [...prevStoredMessages, message]);
+        const translateMessage = async (text, targetLanguage) => {
+          try {
+            const response = await fetch('URL_DE_LA_API_DE_TRADUCCION', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                message: text,
+                targetLanguage: targetLanguage,
+              }),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              //Procesamiento de la respuesta de la API
+              const translatedMessage = data.translatedText; 
+
+              setMessages((prevMessages) => [
+                ...prevMessages,
+                { text: translatedMessage, sender: "other", language: targetLanguage }
+              ]);
+            } else {
+              console.error('Error al traducir el mensaje:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Error al procesar la solicitud:', error);
+          }
+        };
+
+        const activateTranslation = () => {
+          alert('Sistema de traducción activado');
         };
 
         return (
