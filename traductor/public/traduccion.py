@@ -57,15 +57,15 @@ x = Embedding(vocab_size_esp, embedding_dim)(inputs)
 
 
 # Encoder
-encoder = TransformerEncoder(num_layers=2, num_heads=4, ff_dim=32)
-encoder_output = encoder(x)
+#encoder = TransformerEncoder(num_layers=2, num_heads=4, ff_dim=32)
+encoder_output = encoder(x) # type: ignore
 
 # Decoder
 maxlen_ing = 5
 decoder_inputs = Input(shape=(maxlen_ing,))
 decoder_embeddings = Embedding(vocab_size_ing, embedding_dim)(decoder_inputs)
-decoder = TransformerDecoder(num_layers=2, num_heads=4, ff_dim=32)
-decoder_outputs = decoder(decoder_embeddings, encoder_output)
+#decoder = TransformerDecoder(num_layers=2, num_heads=4, ff_dim=32)
+decoder_outputs = decoder(decoder_embeddings, encoder_output) # type: ignore
 
 
 outputs = Dense(vocab_size_ing, activation='softmax')(decoder_outputs)
