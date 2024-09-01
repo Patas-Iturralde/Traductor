@@ -28,7 +28,48 @@ app.get('/mensaje_es', async (req, res) => {
 
     console.error(error);
 
-    res.status(500).json({ message: 'Error al obtener usuarios' });
+    res.status(500).json({ message: 'Error al obtener mensaje' });
+
+  }
+
+});
+
+app.post('/mensaje_es', async (req, res) => {
+
+  try {
+
+    const { mensaje } = req.body; // Obtener el mensaje desde el cuerpo de la solicitud
+
+    const query = 'INSERT INTO mensaje_espanol (mensaje) VALUES (?)';
+
+    const result = await db.execute(query, [mensaje]);
+
+    res.json({ message: 'Mensaje traducido insertado correctamente' });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({ message: 'Error al insertar mensaje traducido' });
+
+  }
+
+});
+
+
+app.get('/mensaje_en', async (req, res) => {
+
+  try {
+
+    const [rows] = await db.execute('SELECT * FROM mensaje_ingles');
+
+    res.json(rows);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({ message: 'Error al obtener mensaje' });
 
   }
 
