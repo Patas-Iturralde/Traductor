@@ -4,7 +4,7 @@ import json
 
 #consumo API
 
-url = "http://localhost:3000/mensaje_es"
+url = "http://localhost:3001/mensaje_es"
 
 response = requests.get(url)
 data = response.json()
@@ -25,7 +25,7 @@ for mensaje in data:
 
     mensaje_traducido = traducir_espanol_ingles(mensaje['mensaje'])
     
-    url_post = "http://localhost:3000/mensaje_en"  # Asumo que el endpoint es /mensaje_en
+    url_post = "http://localhost:3001/mensaje_en"  # Asumo que el endpoint es /mensaje_en
  
     headers = {'Content-Type': 'application/json'}
  
